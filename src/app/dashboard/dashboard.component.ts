@@ -10,6 +10,10 @@ declare const $;
 })
 export class DashboardComponent implements OnInit {
   public url: any;
+  public id: number;
+  public errorMessage: string;
+  public successMessage: string;
+  public showUpdate: any;
   public createForm: FormGroup;
   public userInfo = [];
 
@@ -17,7 +21,9 @@ export class DashboardComponent implements OnInit {
     return {
       name: ['', Validators.compose([Validators.required])],
       phone: ['', Validators.compose([Validators.required])],
-      email: ['', Validators.compose([Validators.required])],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      address: ['', Validators.compose([Validators.required])],
+      work: ['', Validators.compose([Validators.required])],
     };
   };
 
@@ -29,9 +35,20 @@ export class DashboardComponent implements OnInit {
   }
 
   onSubmit() {
-    this.createForm.value['img'] = this.url;
-    this.userInfo.push(this.createForm.value);
-    console.log('form data :: ', this.userInfo);
+    if (!this.url) {
+      this.errorMessage = 'Please update your DP';
+      setTimeout(() => {
+        this.errorMessage = '';
+      }, 5000);
+    } else {
+      this.createForm.value['img'] = this.url;
+      this.userInfo.push(this.createForm.value);
+      this.successMessage = 'User successfully added';
+      setTimeout(() => {
+        this.successMessage = '';
+      }, 5000);
+      this.createForm.reset();
+    }
   }
 
   readUrl(event) {
@@ -44,5 +61,24 @@ export class DashboardComponent implements OnInit {
 
       reader.readAsDataURL(event.target.files[0]);
     }
+  }
+
+  onAdd(i) {
+    this.id = i;
+    this.showUpdate = true;
+    this.createForm = this.fb.group(this.userInfo[i]);
+  }
+
+  onOpen() {
+    this.showUpdate = false;
+    $('#exampleModal').modal('show');
+  }
+
+  onEdit() {
+    this.userInfo[this.id] = this.createForm.value;
+    this.successMessage = 'User successfully updated';
+    setTimeout(() => {
+      this.successMessage = '';
+    }, 5000);
   }
 }

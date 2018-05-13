@@ -7,7 +7,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderNavComponent } from './header-nav/header-nav.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 const routing: Routes = [
   {path: '', component: DashboardComponent}
@@ -23,6 +23,7 @@ const routing: Routes = [
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    FormsModule,
     RouterModule.forRoot(routing)
   ],
   providers: [],

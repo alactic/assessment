@@ -1,79 +1,218 @@
 <!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">New User</h4>
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
-        <form [formGroup] = "createForm" class=" col-md-7" style="float: left">
-          <div class="form-group">
-            <input type="text" class="form-control" formControlName="name" id="email" placeholder="Name">
-          </div>
-          <div class="form-group">
-            <input type="email" class="form-control" id="pwd" formControlName="email" placeholder="Email">
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control" id="pwd" formControlName="phone" placeholder="Phone">
-          </div>
-        </form>
-        <div style="float: right" class=" col-md-5">
+        <form [formGroup]="createForm">
+          <!-- Search form -->
+          <div class="row">
+            <div class="col-md-8">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="validationTooltipUsernamePrepend"><i class="fa fa-user"></i></span>
+                </div>
+                <input type="text" class="form-control" formControlName="name" id="validationTooltipUsername"
+                       placeholder="name"
+                       aria-describedby="validationTooltipUsernamePrepend">
+              </div>
+              <div *ngIf="createForm.get('name').invalid && createForm.get('name').touched"
+                   class="alert alert-danger text-center">
+                Username is required
+              </div>
+              <br>
 
-          <span class="d-none d-lg-block">
-               <img class="img-fluid img-profile rounded-circle mx-auto mb-1" *ngIf="!url" src="assets/img/profile.jpg" style="height: 100%; width: 100%" alt="">
-               <img class="img-fluid img-profile rounded-circle mx-auto mb-1" *ngIf="url" [src]="url" style="height: 100%; width: 100%" alt="">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="validationTooltipUsernamePrepend"><i
+                    class="fa fa-envelope"></i></span>
+                </div>
+                <input type="email" class="form-control" formControlName="email" id="validationTooltipUsername"
+                       placeholder="email"
+                       aria-describedby="validationTooltipUsernamePrepend" required="">
+              </div>
+              <div *ngIf="createForm.get('email').invalid && createForm.get('email').touched"
+                   class="alert alert-danger text-center">
+                Email is required
+              </div>
+              <br>
+
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="validationTooltipUsernamePrepend"><i
+                    class="fa fa-phone"></i></span>
+                </div>
+                <input type="text" class="form-control" formControlName="phone" id="validationTooltipUsername"
+                       placeholder="Phone Number"
+                       aria-describedby="validationTooltipUsernamePrepend">
+              </div>
+              <div *ngIf="createForm.get('phone').invalid && createForm.get('phone').touched"
+                   class="alert alert-danger text-center">
+                Phone No. is required
+              </div>
+              <br>
+            </div>
+            <div class="col-md-4">
+              <label for="img">
+            <span class="d-none d-lg-block" style="margin-left: 10% !important;">
+                <img class="img-fluid img-profile rounded-circle mx-auto mb-1" *ngIf="!url" src="assets/dp.png"
+                     style="height: 100% !important; width: 100% !important" alt="">
+               <img class="img-fluid img-profile rounded-circle mx-auto mb-1" *ngIf="url" [src]="url"
+                    style="height: 100%; width: 100%" alt="">
+              <img class="img-fluid img-profile rounded-circle mx-auto mb-1" *ngIf="!url" src="assets/img/camera.png"
+                   style="height: 10%; width: 10%; margin-left: 45% !important;" alt="">
           </span>
-          <input type='file' (change)="readUrl($event)">
+              </label>
+              <input type='file' id="img" (change)="readUrl($event)" style="display: none">
+
+            </div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="validationTooltipUsernamePrepend"><i
+                class="fa fa-map-marker"></i></span>
+            </div>
+            <input type="text" class="form-control" formControlName="address" id="validationTooltipUsername"
+                   placeholder="Address"
+                   aria-describedby="validationTooltipUsernamePrepend">
+          </div>
+          <div *ngIf="createForm.get('address').invalid && createForm.get('address').touched"
+               class="alert alert-danger text-center">
+            Address is required
+          </div>
+          <br>
+
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="validationTooltipUsernamePrepend"><i class="fa fa-envelope"></i></span>
+            </div>
+            <input type="text" class="form-control" formControlName="work" id="validationTooltipUsername"
+                   placeholder="Work"
+                   aria-describedby="validationTooltipUsernamePrepend">
+          </div>
+          <div *ngIf="createForm.get('work').invalid && createForm.get('work').touched"
+               class="alert alert-danger text-center">
+            Work is required
+          </div>
+          <br>
+
+        </form>
+        <div  style="float:right !important;">
+          <span style="color: darkred; font-weight: bold; padding-right: 10px">{{errorMessage}}</span>
+          <span style="color: #1c7430; font-weight: bold; padding-right: 10px">{{successMessage}}</span>
+          <button class="btn btn-success" (click)="onSubmit()" [disabled]="createForm.invalid" *ngIf="!showUpdate">Add</button>
+          <button class="btn btn-success" (click)="onEdit()" [disabled]="createForm.invalid" *ngIf="showUpdate">Edit</button>
+        </div>
+        <div style="float:left !important;">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-success" (click)="onSubmit()">Add</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-      </div>
     </div>
-
   </div>
 </div>
 
 
-<body id="page-top" class="container">
+<div class="row" style="width: 100%">
 
-<app-sidebar></app-sidebar>
+  <!-- Navbar brand -->
+  <div style="float: left" class="col-md-5"><a class="navbar-brand" style="font-weight: bold">Contact</a></div>
 
-<div class="container-fluid p-0">
-  <section class="resume-section" id="about">
-    <div class="row">
-      <h3 class="col-md-8">Contact</h3>
-      <div class="col-md-3" style="padding-right: 10%; margin-right: -80px">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search" />
-        </div>
-      </div>
-      <div class="col-md-1">
-        <i class="fa fa-plus" data-toggle="modal" data-target="#myModal"></i>
-      </div>
+  <!-- Collapse button -->
+  <div style="float: right; margin-top: -25px" class="col-md-7">
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto" style="float: right !important;">
+        <!-- Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+             aria-expanded="false">Google</a>
+          <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav mr-auto"
+          style="float: right !important; margin-right: 20px !important; margin-left: 20px !important;">
+        <!-- Dropdown -->
+        <li class="nav-item">
+          <a class="nav-link" id="navbarDropdownMenuLink" (click)="onOpen()" data-toggle="modal" data-target="#exampleModal"><i
+            class="fa fa-plus"></i></a>
+        </li>
+      </ul>
+      <!-- Search form -->
+      <form class="form-inline" style="float: right !important; margin-top: 10px !important;">
+        <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+      </form>
+      <!-- Links -->
+
+      <!-- Links -->
     </div>
-    <div class="my-auto">
-
-      <br><br><br>
-      <div class="row" style="padding-left: 10%; padding-right: 10%" *ngFor="let user of userInfo">
-        <div class="col-md-1">
-            <span class="d-none d-lg-block">
-               <img class="img-fluid img-profile rounded-circle mx-auto mb-1" [src]="user?.img" style="height: 100%; width: 100%" alt="">
-             </span>
-        </div>
-        <div class="col-md-3">{{user?.name}}</div>
-        <div class="col-md-4">{{user?.phone}}</div>
-        <div class="col-md-4">{{user?.email}}</div>
-      </div>
-    </div>
-  </section>
-
-
+    <!-- Collapsible content -->
+  </div>
 </div>
 
+<div class="row" style="margin: 0; padding: 0">
 
-</body>
+  <app-sidebar></app-sidebar>
+  <div class="col-md-12" style="height: 100%; padding-left: 5% !important; margin-top: 10%;">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-borderless">
+          <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Phone number</th>
+            <th scope="col">Email</th>
+            <th scope="col">&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of userInfo; let i = index">
+            <td style="width: 40px !important;">
+            <span>
+               <img class="img-fluid img-profile rounded-circle mx-auto mb-1" *ngIf="url" [src]="user?.img"
+                    height="20px" width="100px" alt="">
+          </span>
+            </td>
+            <td>{{user?.name}}</td>
+            <td>{{user?.phone}}</td>
+            <td>{{user?.email}}</td>
+            <td>
+              <div  style="float: left;">
+                <i class="fa fa-star" style="color: gold; padding: 5px"></i>
+                <i class="fa fa-pencil" (click)="onAdd(i)" data-toggle="modal" data-target="#exampleModal" style="padding: 5px"></i>
+              </div>
+              <div class="dropdown" style="float: left;">
+                <span class="btn" data-toggle="dropdown">
+                  <i class="fa fa-align-right"></i></span>
+                <ul class="dropdown-menu">
+                  <li><a href="#">HTML</a></li>
+                  <li><a href="#">CSS</a></li>
+                  <li><a href="#">JavaScript</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="userInfo?.length === 0"></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
